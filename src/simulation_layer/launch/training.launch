@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- World configuration -->
+  <arg name="world_file" default="$(find simulation_layer)/worlds/training_maps.world" />
+  <arg name="paused" default="false" />
+  <arg name="use_sim_time" default="true" />
+
+  <!-- GUI / headless options -->
+  <arg name="gui" default="true" />
+  <arg name="headless" default="false" />
+
+  <!-- Launch Gazebo -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(arg world_file)" />
+    <arg name="paused" value="$(arg paused)" />
+    <arg name="use_sim_time" value="$(arg use_sim_time)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="headless" value="$(arg headless)" />
+  </include>
+
+  <!-- Load URDF into parameter server -->
+  <param name="robot_description" command="cat $(find simulation_layer)/../storm.urdf" />
+  <!-- Spawn robot model into Gazebo -->
+  <node name="spawn_storm" pkg="gazebo_ros" type="spawn_model" output="screen"
+        args="-file $(find simulation_layer)/../storm.urdf -urdf -model storm -x 0 -y 0 -z 0.05"/>
+
+  <!-- Start robot_state_publisher -->
+  <node name="robot_training" pkg="simulation_layer" type="training.py" output="screen"/>
+</launch>

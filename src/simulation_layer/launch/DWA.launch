@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- ══════════════════════════════════════════════════════════════
+       DWA.launch — DWA local planner on map_1.
+
+       Spawn and goal are automatically read via ParseWorld
+       from the map_1.world file.  Waypoints are fixed below.
+
+       Uso:
+         ./launch.sh DWA.launch
+         ./launch.sh 'DWA.launch gui:=false headless:=true'
+     ══════════════════════════════════════════════════════════════ -->
+
+  <arg name="gui"       default="true" />
+  <arg name="headless"  default="false" />
+
+  <arg name="world_file"
+       value="$(find simulation_layer)/worlds/map_1.world" />
+
+  <!-- ── Gazebo ── -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name"   value="$(arg world_file)" />
+    <arg name="paused"       value="false" />
+    <arg name="use_sim_time" value="true" />
+    <arg name="gui"          value="$(arg gui)" />
+    <arg name="headless"     value="$(arg headless)" />
+  </include>
+
+  <!-- ── URDF (spawn handled by DWA node to avoid race condition) ── -->
+  <param name="robot_description"
+         command="cat $(find simulation_layer)/../storm.urdf" />
+
+  <!-- ── DWA planner ── -->
+  <node name="dwa_planner" pkg="simulation_layer" type="run_DWA.py"
+        output="screen" required="true">
+    <param name="world_file" value="$(arg world_file)" />
+    <param name="waypoints"
+           value="-2.7,-1.0;-2.7,0.5;-2.7,2.8;0.0,2.8;2.2,2.8;2.0,-1.3;-1.3,-1.3;-0.8,1.2;1.0,1.2;0.55,-0.06" />
+  </node>
+</launch>

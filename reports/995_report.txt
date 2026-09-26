@@ -1,0 +1,12 @@
+Test Report
+====================================================
+  Date                  2026-06-09 22:23:22
+  Model                 m3.keras
+  Map                   map_3
+  Duration              300.1s
+  Total steps           2984
+  Collisions            1
+  Collision steps           1 (0.0%)
+  Collision-free steps   2983 (100.0%)
+  Avg steps / collision  1492
+====================================================

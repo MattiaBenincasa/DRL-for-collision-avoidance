@@ -1,0 +1,17 @@
+/.catkin_workspace
+/.vscode
+/build
+/devel
+
+# Ignore Python cache and compiled files
+__pycache__/
+*.py[cod]
+
+# Ignore paper and extracted text
+paper.pdf
+paper.txt
+
+# Ignore metrics and models files
+/src/metrics
+/src/undrafted_models
+utils/out
